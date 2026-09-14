@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dont.likesyou.org - Insights & Dispatch</title>
+
+    <!-- CORE REACT & ANIMATION LIBRARIES -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* --- USER'S ORIGINAL EXACT CSS --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body, html {
+            width: 100%;
+            background-color: #030712;
+            font-family: 'Courier New', Courier, monospace;
+            color: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            position: fixed;
+            top: 28px; /* Adjusted for top bar */
+            left: 0;
+            width: 100%;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 191, 255, 0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            color: #ff3366;
+            text-shadow: 0 0 10px rgba(255, 51, 102, 0.6);
+        }
+
+        nav { display: flex; align-items: center; }
+
+        nav button {
+            color: #cbd5e1;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            font-family: 'Courier New', Courier, monospace;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        nav button:hover, nav button.active {
+            color: #00bfff;
+            text-shadow: 0 0 8px rgba(0, 191, 255, 0.6);
+        }
+
+        .blog-hero {
+            position: relative;
+            padding: 160px 5% 80px 5%;
+            background: radial-gradient(circle at 80% 20%, #0b1329 0%, #030712 70%);
+            border-bottom: 1px solid rgba(0, 191, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .lens-flare {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(135,206,250,0.6) 0%, rgba(0,191,255,0.15) 40%, transparent 70%);
+            filter: blur(30px);
+            pointer-events: none;
+        }
+
+        .hero-content { max-width: 800px; position: relative; z-index: 2; }
+        .hero-tag { font-size: 0.9rem; color: #93c5fd; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
+        .hero-title { font-size: 3rem; font-weight: bold; margin-bottom: 20px; line-height: 1.2; text-shadow: 0 0 20px rgba(255, 255, 255, 0.4); }
+        .hero-excerpt { font-size: 1.1rem; color: #cbd5e1; line-height: 1.6; margin-bottom: 30px; }
+
+        .read-more-btn {
+            display: inline-block;
+            background: transparent;
+            border: 1px solid #00bfff;
+            color: #00bfff;
+            padding: 10px 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.2);
+            cursor: pointer;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .read-more-btn:hover {
+            background: #00bfff;
+            color: #030712;
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.6);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 5%;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 50px;
+            min-height: 60vh;
+        }
+
+        @media (max-width: 1000px) {
+            .container { grid-template-columns: 1fr; }
+            header { flex-direction: column; gap: 15px; padding: 15px 5%; }
+            nav { flex-wrap: wrap; justify-content: center; gap: 10px; }
+            nav button { margin-left: 0; }
+        }
+
+        .feed-title {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            border-left: 3px solid #ff3366;
+            padding-left: 15px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .article-card {
+            background: rgba(11, 19, 41, 0.4);
+            border: 1px solid rgba(0, 191, 255, 0.15);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .article-card:hover { border-color: rgba(0, 191, 255, 0.6); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,191,255,0.1); }
+        .article-meta { font-size: 0.8rem; color: #93c5fd; margin-bottom: 10px; letter-spacing: 1px; display: flex; justify-content: space-between; }
+        .article-card h3 { font-size: 1.5rem; margin-bottom: 15px; color: #ffffff; }
+        .article-card p { color: #94a3b8; font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; white-space: pre-wrap; }
+        
+        .sidebar-widget {
+            background: rgba(11, 19, 41, 0.2);
+            border: 1px solid rgba(0, 191, 255, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .sidebar-widget h4 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            color: #ffffff;
+            border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .sidebar-widget p { font-size: 0.9rem; color: #94a3b8; line-height: 1.5; margin-bottom: 15px; }
+
+        .newsletter-input {
+            width: 100%;
+            background: #030712;
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            padding: 10px;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        .newsletter-input:focus { outline: none; border-color: #00bfff; box-shadow: 0 0 10px rgba(0,191,255,0.3); }
+
+        .newsletter-btn {
+            width: 100%;
+            background: #00bfff;
+            color: #030712;
+            border: none;
+            padding: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        .newsletter-btn:hover { background: #ff3366; color: #fff; box-shadow: 0 0 15px rgba(255,51,102,0.6); }
+
+        .category-list { list-style: none; }
+        .category-list li { margin-bottom: 10px; }
+        .category-list button { background: none; border: none; color: #cbd5e1; font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; cursor: pointer; transition: color 0.3s ease; }
+        .category-list button:hover { color: #00bfff; }
+
+        /* --- NEW INTEGRATION CSS --- */
+        
+        /* Top Utility Bar */
+        .top-bar {
+            position: fixed; top: 0; left: 0; width: 100%; height: 28px;
+            background: #02040a; border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; font-size: 0.75rem; z-index: 1001; color: #94a3b8;
+        }
+
+        /* Header Login Inputs */
+        .login-wrap { display: flex; align-items: center; gap: 10px; margin-left: 25px; }
+        .login-input {
+            background: #030712; border: 1px solid rgba(0,191,255,0.3); color: #fff;
+            padding: 4px 8px; font-family: 'Courier New', Courier, monospace; font-size: 0.75rem; width: 90px;
+        }
+        .login-input:focus { outline: none; border-color: #00bfff; }
+        .login-input.error { border-color: #ff3366; animation: shake 0.4s; }
+        
+        .login-btn {
+            background: #00bfff; color: #030712; border: none; padding: 5px 12px;
+            font-family: 'Courier New', Courier, monospace; font-size: 0.75rem; font-weight: bold; cursor: pointer;
+        }
+        .login-btn:hover { background: #ff3366; color: #fff; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        /* Embed Elements */
+        .embed-container { margin-top: 15px; border: 1px solid rgba(0, 191, 255, 0.3); background: #02040a; }
+        .embed-header { background: rgba(0, 191, 255, 0.1); padding: 5px 10px; font-size: 0.7rem; color: #00bfff; border-bottom: 1px solid rgba(0, 191, 255, 0.2); }
+        iframe { width: 100%; border: none; background: #000; }
+
+        /* Admin Table */
+        .admin-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .admin-table th { text-align: left; padding: 10px; color: #00bfff; border-bottom: 1px solid rgba(0,191,255,0.3); }
+        .admin-table td { padding: 10px; border-bottom: 1px solid rgba(0,191,255,0.1); color: #cbd5e1; }
+
+        /* Professional Footer */
+        footer {
+            border-top: 1px solid rgba(0, 191, 255, 0.2);
+            background: #02040a; color: #64748b; padding: 50px 5%; font-size: 0.85rem; letter-spacing: 1px;
+        }
+        .footer-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px;
+            max-width: 1200px; margin: 0 auto 30px auto;
+        }
+        .footer-col h4 { color: #fff; border-bottom: 1px solid rgba(0,191,255,0.2); padding-bottom: 10px; margin-bottom: 15px; }
+        .stat-box { background: rgba(0,191,255,0.05); border: 1px solid rgba(0,191,255,0.2); padding: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .stat-box.alert { background: rgba(255,51,102,0.05); border-color: rgba(255,51,102,0.3); }
+        .footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid rgba(0,191,255,0.1); margin-top: 20px; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 191, 255, 0.4); }
+        ::-webkit-scrollbar-thumb:hover { background: #00bfff; }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { motion, AnimatePresence } = window.Motion;
+
+        // --- AUTHENTICATION & ROLES ---
+        const VALID_CREDENTIALS = [
+            { uid: 'root', pass: 'admin123', role: 'SUPER_ADMIN', name: 'Root_Operator' },
+            { uid: 'mod', pass: 'mod123', role: 'MODERATOR', name: 'Sentinel_Mod' },
+            { uid: 'creator', pass: 'art123', role: 'CREATOR', name: 'Data_Creator' },
+            { uid: 'user', pass: 'user123', role: 'USER', name: 'Terminal_User' }
+        ];
+
+        const ROLES = {
+            SUPER_ADMIN: { color: '#ff3366', permissions: ['ALL', 'ADMIN_PANEL', 'MODERATION', 'USER_MGMT', 'SYSTEM_LOGS', 'AI_STUDIO', 'BROADCAST'] },
+            MODERATOR: { color: '#00bfff', permissions: ['ADMIN_PANEL', 'MODERATION', 'SYSTEM_LOGS', 'BROADCAST'] },
+            CREATOR: { color: '#93c5fd', permissions: ['AI_STUDIO', 'BROADCAST', 'VAULT_WRITE'] },
+            USER: { color: '#cbd5e1', permissions: ['BROADCAST'] },
+            GUEST: { color: '#64748b', permissions: ['READ_ONLY'] }
+        };
+
+        // --- MEDIA PARSER ---
+        const parseMediaLinks = (text) => {
+            if (!text) return [];
+            const media = [];
+            const ytPlaylistRegex = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/playlist\?list=([\w-]+)/gi;
+            const ytVideoRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([\w-]{11})/gi;
+            const spotifyRegex = /(?:https?:\/\/)?open\.spotify\.com\/(track|playlist|album)\/([a-zA-Z0-9]+)/gi;
+            const soundcloudRegex = /(?:https?:\/\/)?(?:www\.)?soundcloud\.com\/[a-zA-Z0-9-_]+\/(?:sets\/[a-zA-Z0-9-_]+|[a-zA-Z0-9-_]+)/gi;
+            const mixcloudRegex = /(?:https?:\/\/)?(?:www\.)?mixcloud\.com\/[a-zA-Z0-9-_]+\/[a-zA-Z0-9-_]+\//gi;
+            const imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp)|https?:\/\/images\.unsplash\.com\/[^\s]+)/gi;
+
+            let match;
+            while ((match = ytPlaylistRegex.exec(text)) !== null) media.push({ type: 'youtube', url: match[0], embed: `https://www.youtube.com/embed/videoseries?list=${match[1]}` });
+            while ((match = ytVideoRegex.exec(text)) !== null) if (!media.some(m => m.url === match[0])) media.push({ type: 'youtube', url: match[0], embed: `https://www.youtube.com/embed/${match[1]}` });
+            while ((match = spotifyRegex.exec(text)) !== null) media.push({ type: 'spotify', mediaType: match[1], url: match[0], embed: `https://open.spotify.com/embed/${match[1]}/${match[2]}` });
+            while ((match = soundcloudRegex.exec(text)) !== null) {
+                const isPl = match[0].includes('/sets/');
+                media.push({ type: 'soundcloud', isPl, url: match[0], embed: `https://w.soundcloud.com/player/?url=${encodeURIComponent(match[0])}&color=%2300bfff&auto_play=false&hide_related=true&show_comments=true&visual=${isPl ? 'true' : 'false'}` });
+            }
+            while ((match = mixcloudRegex.exec(text)) !== null) media.push({ type: 'mixcloud', url: match[0], embed: `https://www.mixcloud.com/widget/iframe/?hide_cover=1&feed=${encodeURIComponent(match[0])}` });
+            while ((match = imageRegex.exec(text)) !== null) media.push({ type: 'image', url: match[0] });
+
+            return media;
+        };
+
+        // --- MOCK DATABASE ---
+        const INITIAL_POSTS = [
+            { id: 1, meta: "SYS_LOG // March 28, 2026", title: "The Architecture of Anonymous Networks", author: "Root_Operator", role: "SUPER_ADMIN", content: "An exploratory look into how routing layers, onion encryption, and zero-knowledge systems preserve operational privacy when interacting with public-facing database endpoints.\n\nDemonstration Audio Stream:\nhttps://soundcloud.com/nd_madeit/lofi-chill", likes: 42, comments: 8 },
+            { id: 2, meta: "SECURITY // March 15, 2026", title: "Bypassing the Default Filter Bubble", author: "Data_Creator", role: "CREATOR", content: "Algorithms are tuned to feed confirmation loops. Breaking out requires deliberate friction, alternative protocol layers, and raw, unfiltered data sources.\n\nVideo Demonstration:\nhttps://www.youtube.com/watch?v=LXb3EKWsInQ", likes: 89, comments: 14 }
+        ];
+
+        // --- MAIN COMPONENT ---
+        const App = () => {
+            // Core State
+            const [isLoggedIn, setIsLoggedIn] = useState(false);
+            const [currentRoleKey, setCurrentRoleKey] = useState('GUEST');
+            const [currentUserName, setCurrentUserName] = useState('');
+            const [activeTab, setActiveTab] = useState('articles');
+            const [adminTab, setAdminTab] = useState('moderation');
+            
+            // Login Forms
+            const [loginKey, setLoginKey] = useState('');
+            const [loginPass, setLoginPass] = useState('');
+            const [authError, setAuthError] = useState(false);
+
+            // Metrics & IP Tracking
+            const [visitCount, setVisitCount] = useState(0);
+            const [sessionIp, setSessionIp] = useState('Detecting...');
+
+            // App Data
+            const [posts, setPosts] = useState(INITIAL_POSTS);
+            const [users, setUsers] = useState([
+                { id: 'u_1', name: 'Root_Operator', role: 'SUPER_ADMIN', status: 'Active', ip: '192.168.1.45' },
+                { id: 'u_2', name: 'Null_Node', role: 'USER', status: 'Flagged', ip: '185.220.101.5' }
+            ]);
+            const [modQueue, setModQueue] = useState([
+                { id: 'mod_1', user: 'Null_Node', reason: 'Unverified External Route', content: 'Injected test URL https://soundcloud.com/sample/track' }
+            ]);
+            const [logs, setLogs] = useState([{ id: 'log_0', type: 'SYSTEM', msg: 'Core initialized.', time: new Date().toLocaleTimeString() }]);
+            const [vault, setVault] = useState([]);
+
+            // Editor States
+            const [postTitle, setPostTitle] = useState('');
+            const [postContent, setPostContent] = useState('');
+            const [studioPrompt, setStudioPrompt] = useState('');
+            const [isGenerating, setIsGenerating] = useState(false);
+            const [studioResult, setStudioResult] = useState(null);
+
+            // --- 24H VISIT & IP TRACKER LOGIC ---
+            useEffect(() => {
+                const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+                let storedVisits = parseInt(localStorage.getItem('dl_visits') || '84902', 10);
+                const lastVisitTime = parseInt(localStorage.getItem('dl_last_visit') || '0', 10);
+                let currentIp = localStorage.getItem('dl_ip');
+
+                if (!currentIp) {
+                    currentIp = `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`;
+                    localStorage.setItem('dl_ip', currentIp);
+                }
+                setSessionIp(currentIp);
+
+                const now = Date.now();
+                if (now - lastVisitTime > ONE_DAY_MS) {
+                    storedVisits += 1;
+                    localStorage.setItem('dl_visits', storedVisits.toString());
+                    localStorage.setItem('dl_last_visit', now.toString());
+                    addLog('ANALYTICS', `Unique connection logged: ${currentIp}`, 'INFO');
+                }
+                setVisitCount(storedVisits);
+            }, []);
+
+            const currentRole = ROLES[currentRoleKey];
+            const hasPermission = (perm) => {
+                if (!isLoggedIn) return perm === 'READ_ONLY';
+                if (currentRole.permissions.includes('ALL')) return true;
+                return currentRole.permissions.includes(perm);
+            };
+
+            const addLog = (type, msg) => {
+                setLogs(prev => [{ id: 'log_' + Date.now(), type, msg, time: new Date().toLocaleTimeString() }, ...prev]);
+            };
+
+            // Authentication Handlers
+            const handleLogin = (e) => {
+                e.preventDefault();
+                setAuthError(false);
+                const valid = VALID_CREDENTIALS.find(u => u.uid === loginKey && u.pass === loginPass);
+                
+                if (valid) {
+                    setIsLoggedIn(true);
+                    setCurrentRoleKey(valid.role);
+                    setCurrentUserName(valid.name);
+                    setLoginKey(''); setLoginPass('');
+                    addLog('SECURITY', `Auth Success: ${valid.uid} [${valid.role}]`);
+                } else {
+                    setAuthError(true);
+                    addLog('SECURITY', `Auth Failed: Invalid credentials for UID ${loginKey}`);
+                    setTimeout(() => setAuthError(false), 500);
+                }
+            };
+
+            const handleLogout = () => {
+                setIsLoggedIn(false); setCurrentRoleKey('GUEST'); setCurrentUserName('');
+                setActiveTab('articles');
+                addLog('SECURITY', `Session terminated.`);
+            };
+
+            // Content Handlers
+            const handlePost = (e) => {
+                e.preventDefault();
+                if (!postContent.trim()) return;
+                setPosts([{
+                    id: Date.now(), meta: `DISPATCH // ${new Date().toLocaleDateString()}`,
+                    title: postTitle || "Untitled Dispatch", author: currentUserName, role: currentRoleKey,
+                    content: postContent, likes: 0, comments: 0
+                }, ...posts]);
+                setPostTitle(''); setPostContent('');
+                addLog('DISPATCH', `Broadcast by ${currentUserName}`);
+            };
+
+            const handleAI = () => {
+                if (!studioPrompt) return;
+                setIsGenerating(true); setStudioResult(null);
+                setTimeout(() => {
+                    setIsGenerating(false);
+                    setStudioResult({ id: Date.now(), url: `https://images.unsplash.com/photo-${1600000000000 + Math.floor(Math.random()*9999999)}?q=80&w=800`, prompt: studioPrompt, time: new Date().toLocaleTimeString() });
+                    addLog('STUDIO', `Asset rendered: "${studioPrompt.substring(0,20)}..."`);
+                }, 2000);
+            };
+
+            return (
+                <div>
+                    {/* TOP STATUS BAR */}
+                    <div className="top-bar">
+                        <div>NETWORK STATUS: <span className="text-[#00bfff]">ONLINE</span></div>
+                        <div>NODE: US_EAST // LATENCY: <span className="text-[#00bfff]">14ms</span></div>
+                    </div>
+
+                    {/* MAIN HEADER */}
+                    <header>
+                        <a href="#" onClick={() => setActiveTab('articles')} className="logo">
+                            <i data-lucide="terminal"></i> dont.likes<span>yOu</span>.org
+                        </a>
+                        
+                        <nav>
+                            <button onClick={() => setActiveTab('articles')} className={activeTab === 'articles' ? 'active' : ''}>Articles</button>
+                            {hasPermission('AI_STUDIO') && <button onClick={() => setActiveTab('studio')} className={activeTab === 'studio' ? 'active' : ''}>Studio</button>}
+                            {hasPermission('ADMIN_PANEL') && <button onClick={() => setActiveTab('admin')} className={activeTab === 'admin' ? 'active' : ''}>Terminal <span className="text-[#ff3366]">[{modQueue.length}]</span></button>}
+                            <button onClick={() => setActiveTab('vault')} className={activeTab === 'vault' ? 'active' : ''}>Vault</button>
+                            <button onClick={() => setActiveTab('analytics')} className={activeTab === 'analytics' ? 'active' : ''}>Metrics</button>
+
+                            {/* LOGIN MODULE IN HEADER */}
+                            <div className="login-wrap">
+                                {isLoggedIn ? (
+                                    <>
+                                        <span className="text-[11px] text-[#00bfff] font-bold">[{currentRole.name}]</span>
+                                        <button onClick={handleLogout} className="login-btn !bg-[#ff3366] !text-[#fff]">LOGOUT</button>
+                                    </>
+                                ) : (
+                                    <form onSubmit={handleLogin} style={{display:'flex', gap:'5px'}}>
+                                        <input type="text" placeholder="UID" value={loginKey} onChange={e=>setLoginKey(e.target.value)} className={`login-input ${authError ? 'error' : ''}`} required />
+                                        <input type="password" placeholder="PASS" value={loginPass} onChange={e=>setLoginPass(e.target.value)} className={`login-input ${authError ? 'error' : ''}`} required />
+                                        <button type="submit" className="login-btn">AUTH</button>
+                                    </form>
+                                )}
+                            </div>
+                        </nav>
+                    </header>
+
+                    {/* HERO SECTION */}
+                    {activeTab === 'articles' && (
+                        <section className="blog-hero">
+                            <div className="lens-flare"></div>
+                            <div className="hero-content">
+                                <div className="hero-tag">Featured Dispatch // {new Date().toLocaleDateString()}</div>
+                                <h1 className="hero-title">Decoding the Noise: Why Truth Hits Different in the Digital Age</h1>
+                                <p className="hero-excerpt">Modern systems are built on sanitized narratives and automated consensus. Dive deep into the underlying code of information distribution, decentralized transparency, and the protocols shaping the next era of truth verification.</p>
+                                <button onClick={() => window.scrollTo(0, 500)} className="read-more-btn">Read Transmissions</button>
+                            </div>
+                        </section>
+                    )}
+
+                    {/* MAIN LAYOUT */}
+                    <div className="container" style={{ paddingTop: activeTab !== 'articles' ? '120px' : '60px' }}>
+                        
+                        <main>
+                            <AnimatePresence mode="wait">
+                                
+                                {/* 1. FEED / ARTICLES */}
+                                {activeTab === 'articles' && (
+                                    <motion.div key="feed" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                                        <h2 className="feed-title">
+                                            <span>Latest Dispatches</span>
+                                            <span style={{fontSize:'0.8rem', color:'#93c5fd'}}>{posts.length} TRANSMISSIONS</span>
+                                        </h2>
+
+                                        {hasPermission('BROADCAST') && (
+                                            <div className="article-card">
+                                                <div className="article-meta" style={{color:'#00bfff'}}>&gt; COMPOSE NEW BROADCAST</div>
+                                                <input type="text" placeholder="Title..." value={postTitle} onChange={e=>setPostTitle(e.target.value)} className="newsletter-input" />
+                                                <textarea placeholder="Body content... (Paste YT, Spotify, Soundcloud URLs here)" value={postContent} onChange={e=>setPostContent(e.target.value)} className="newsletter-input" style={{height:'100px'}}></textarea>
+                                                <button onClick={handlePost} className="newsletter-btn">Broadcast to Network</button>
+                                            </div>
+                                        )}
+
+                                        {posts.map(p => (
+                                            <article key={p.id} className="article-card">
+                                                <div className="article-meta">
+                                                    <span>{p.meta}</span>
+                                                    <span style={{color: ROLES[p.role].color}}>AUTH: {p.author}</span>
+                                                </div>
+                                                <h3>{p.title}</h3>
+                                                <p>{p.content}</p>
+                                                
+                                                {/* EMBED PARSER */}
+                                                {parseMediaLinks(p.content).map((m, i) => (
+                                                    <div key={i} className="embed-container">
+                                                        <div className="embed-header">
+                                                            <span>&gt; MEDIA_NODE // {m.type.toUpperCase()}</span>
+                                                            <a href={m.url} target="_blank" style={{color:'#00bfff'}}>EXT_LINK</a>
+                                                        </div>
+                                                        {m.type === 'youtube' && <iframe height="315" src={m.embed}></iframe>}
+                                                        {m.type === 'spotify' && <iframe height={m.mediaType==='playlist'?"352":"152"} src={m.embed}></iframe>}
+                                                        {m.type === 'soundcloud' && <iframe height={m.isPl?"300":"166"} src={m.embed}></iframe>}
+                                                        {m.type === 'mixcloud' && <iframe height="120" src={m.embed}></iframe>}
+                                                        {m.type === 'image' && <img src={m.url} style={{width:'100%'}}/>}
+                                                    </div>
+                                                ))}
+                                            </article>
+                                        ))}
+                                    </motion.div>
+                                )}
+
+                                {/* 2. STUDIO */}
+                                {activeTab === 'studio' && (
+                                    <motion.div key="studio" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                                        <h2 className="feed-title"><span>AI Synthesizer</span></h2>
+                                        <div className="article-card">
+                                            <div className="article-meta">&gt; NEURAL PROMPT</div>
+                                            <textarea value={studioPrompt} onChange={e=>setStudioPrompt(e.target.value)} placeholder="Describe asset to render..." className="newsletter-input h-24"></textarea>
+                                            <button onClick={handleAI} disabled={isGenerating} className="newsletter-btn">{isGenerating ? "Synthesizing..." : "Render Asset"}</button>
+                                        </div>
+                                        {studioResult && (
+                                            <div className="article-card text-center">
+                                                <h4 style={{color:'#00bfff', marginBottom:'15px'}}>Output Buffer</h4>
+                                                <img src={studioResult.url} style={{maxWidth:'100%', border:'1px solid #00bfff', marginBottom:'15px'}} />
+                                                <button onClick={handleSaveToVault} className="read-more-btn">Save to Vault</button>
+                                            </div>
+                                        )}
+                                    </motion.div>
+                                )}
+
+                                {/* 3. ADMIN TERMINAL */}
+                                {activeTab === 'admin' && (
+                                    <motion.div key="admin" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                                        <h2 className="feed-title"><span>Admin Terminal</span><span style={{fontSize:'0.75rem', color:'#ff3366'}}>ROOT_ACCESS</span></h2>
+                                        
+                                        <div style={{display:'flex', gap:'10px', marginBottom:'20px'}}>
+                                            <button onClick={()=>setAdminTab('moderation')} className={`read-more-btn ${adminTab==='moderation'?'!bg-[#00bfff] !text-[#030712]':''}`}>Mod Queue ({modQueue.length})</button>
+                                            {hasPermission('USER_MGMT') && <button onClick={()=>setAdminTab('users')} className={`read-more-btn ${adminTab==='users'?'!bg-[#00bfff] !text-[#030712]':''}`}>User Roster</button>}
+                                            <button onClick={()=>setAdminTab('logs')} className={`read-more-btn ${adminTab==='logs'?'!bg-[#00bfff] !text-[#030712]':''}`}>Audit Logs</button>
+                                        </div>
+
+                                        {adminTab === 'moderation' && (
+                                            modQueue.map(m => (
+                                                <div key={m.id} className="article-card" style={{borderLeft:'4px solid #ff3366'}}>
+                                                    <div className="article-meta"><span>USER: {m.user}</span><span style={{color:'#ff3366'}}>REASON: {m.reason}</span></div>
+                                                    <p>&gt; Payload: {m.content}</p>
+                                                    <button onClick={()=>{setModQueue(modQueue.filter(q=>q.id!==m.id)); addLog('MOD', `Approved ${m.id}`);}} className="newsletter-btn" style={{marginTop:'10px'}}>Approve Payload</button>
+                                                </div>
+                                            ))
+                                        )}
+
+                                        {adminTab === 'users' && hasPermission('USER_MGMT') && (
+                                            <div className="article-card overflow-x-auto">
+                                                <table className="admin-table">
+                                                    <thead><tr><th>UID</th><th>Role</th><th>Status</th><th>IP</th><th>Action</th></tr></thead>
+                                                    <tbody>
+                                                        {users.map(u => (
+                                                            <tr key={u.id}>
+                                                                <td>{u.name}</td><td style={{color:'#ff3366'}}>{u.role}</td><td>{u.status}</td><td>{u.ip}</td>
+                                                                <td><button onClick={()=>{setUsers(users.map(us=>us.id===u.id?{...us, status:'Suspended'}:us))}} style={{color:'#ff3366', background:'none', border:'none', cursor:'pointer'}}>[Suspend]</button></td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        )}
+
+                                        {adminTab === 'logs' && (
+                                            <div className="article-card" style={{fontFamily:'monospace', fontSize:'0.8rem'}}>
+                                                {logs.map(l => (
+                                                    <div key={l.id} style={{borderBottom:'1px solid rgba(0,191,255,0.2)', padding:'8px 0'}}>
+                                                        <span style={{color:'#64748b'}}>{l.time}</span> 
+                                                        <span style={{color:'#ff3366', margin:'0 10px'}}>[{l.type}]</span> 
+                                                        <span>{l.msg}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </motion.div>
+                                )}
+
+                                {/* 4. VAULT */}
+                                {activeTab === 'vault' && (
+                                    <motion.div key="vault" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                                        <h2 className="feed-title"><span>Media Vault</span></h2>
+                                        {vault.length === 0 ? <p style={{color:'#94a3b8'}}>Vault empty. Use Studio to generate assets.</p> : (
+                                            <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'20px'}}>
+                                                {vault.map(v => (
+                                                    <div key={v.id} className="article-card" style={{padding:'15px'}}>
+                                                        <img src={v.url} style={{width:'100%', marginBottom:'10px'}} />
+                                                        <p style={{fontSize:'0.75rem'}}>{v.prompt}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </motion.div>
+                                )}
+
+                                {/* 5. METRICS */}
+                                {activeTab === 'analytics' && (
+                                    <motion.div key="metrics" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                                        <h2 className="feed-title"><span>Live Telemetry</span></h2>
+                                        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'20px'}}>
+                                            <div className="article-card text-center"><div className="article-meta">THROUGHPUT</div><h3 style={{color:'#00bfff'}}>4.2 GB/s</h3></div>
+                                            <div className="article-card text-center"><div className="article-meta">LATENCY</div><h3 style={{color:'#ff3366'}}>14 ms</h3></div>
+                                        </div>
+                                        <div className="article-card" style={{height:'300px', display:'flex', alignItems:'flex-end', gap:'5px', paddingTop:'40px'}}>
+                                            {[...Array(30)].map((_, i) => (
+                                                <motion.div key={i} animate={{height:[`${20+Math.random()*50}%`, `${60+Math.random()*40}%`, `${20+Math.random()*50}%`]}} transition={{repeat:Infinity, duration:1+Math.random()}} style={{flex:1, background:'#00bfff', opacity:0.6}} />
+                                            ))}
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </main>
+
+                        {/* SIDEBAR WIDGETS */}
+                        <aside>
+                            <div className="sidebar-widget">
+                                <h4>About The Network</h4>
+                                <p>dont.likesyou.org is an independent publication dedicated to raw analytics, digital sovereignty, and unfiltered technical dispatches.</p>
+                            </div>
+
+                            <div className="sidebar-widget">
+                                <h4>Secure Transmission</h4>
+                                <p>Subscribe to receive encrypted updates directly to your inbox. No tracking, no marketing bloat.</p>
+                                <input type="email" className="newsletter-input" placeholder="Enter endpoint (email)..." />
+                                <button className="newsletter-btn">Connect</button>
+                            </div>
+                            
+                            <div className="sidebar-widget">
+                                <h4>System Access Protocol</h4>
+                                <p>Test credentials for evaluation:</p>
+                                <ul style={{listStyle:'none', fontSize:'0.75rem', color:'#00bfff', marginTop:'10px'}}>
+                                    <li>UID: root / PASS: admin123</li>
+                                    <li>UID: mod / PASS: mod123</li>
+                                    <li>UID: creator / PASS: art123</li>
+                                </ul>
+                            </div>
+
+                            <div className="sidebar-widget">
+                                <h4>Categories</h4>
+                                <ul className="category-list">
+                                    <li><button onClick={() => setActiveTab('articles')}>&gt; System Architecture (14)</button></li>
+                                    <li><button onClick={() => setActiveTab('articles')}>&gt; Digital Privacy (09)</button></li>
+                                    <li><button onClick={() => setActiveTab('articles')}>&gt; Unfiltered Analysis (22)</button></li>
+                                </ul>
+                            </div>
+                        </aside>
+                    </div>
+
+                    {/* PROFESSIONAL DATA FOOTER */}
+                    <footer>
+                        <div className="footer-grid">
+                            <div className="footer-col" style={{textAlign:'left'}}>
+                                <h4>// SITE_TELEMETRY</h4>
+                                <div className="stat-box">
+                                    <span>UNIQUE VISITS (24H):</span>
+                                    <span style={{color:'#00bfff', fontWeight:'bold'}}>{visitCount.toLocaleString()}</span>
+                                </div>
+                                <div className="stat-box alert">
+                                    <span>YOUR LOGGED IP:</span>
+                                    <span style={{color:'#ff3366', fontWeight:'bold'}}>{sessionIp}</span>
+                                </div>
+                                <p style={{fontSize:'0.65rem', marginTop:'10px'}}>IP data hashed and stored locally via Client Storage for unique 24h counting protocol. Clears automatically.</p>
+                            </div>
+
+                            <div className="footer-col" style={{textAlign:'left'}}>
+                                <h4>// SYSTEM_MODULES</h4>
+                                <ul className="category-list text-left">
+                                    <li><a href="#">&gt; Network Dispatch API</a></li>
+                                    <li><a href="#">&gt; Encrypted Relay Setup</a></li>
+                                    <li><a href="#">&gt; Decentralized Archives</a></li>
+                                </ul>
+                            </div>
+
+                            <div className="footer-col" style={{textAlign:'left'}}>
+                                <h4>// NETWORK_STATUS</h4>
+                                <div style={{display:'flex', flexDirection:'column', gap:'10px', fontSize:'0.8rem'}}>
+                                    <span style={{color:'#00bfff'}}>● ALL SYSTEMS SECURE</span>
+                                    <span style={{color:'#00bfff'}}>● SSL ENCRYPTION ACTIVE</span>
+                                    <span style={{color:'#00bfff'}}>● DATABASE SYNC: 100%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="footer-bottom">
+                            <p>&copy; {new Date().getFullYear()} dont.likesyou.org. All rights reserved. Where Truth Hits Different.</p>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
+```
+    
+  </body>
+  
+</html>

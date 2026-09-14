@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dont.likesyou.org - Insights & Dispatch</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            background-color: #030712;
+            font-family: 'Courier New', Courier, monospace;
+            color: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        /* Top Bar & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(3, 7, 18, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 5%;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #ff3366;
+            text-shadow: 0 0 10px rgba(255, 51, 102, 0.6);
+        }
+
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #00bfff;
+            text-shadow: 0 0 8px rgba(0, 191, 255, 0.6);
+        }
+
+        /* Hero Blog Section */
+        .blog-hero {
+            position: relative;
+            padding: 160px 5% 80px 5%;
+            background: radial-gradient(circle at 80% 20%, #0b1329 0%, #030712 70%);
+            border-bottom: 1px solid rgba(0, 191, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .lens-flare {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(135,206,250,0.6) 0%, rgba(0,191,255,0.15) 40%, transparent 70%);
+            filter: blur(30px);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-tag {
+            font-size: 0.9rem;
+            color: #93c5fd;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+        }
+
+        .hero-excerpt {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .read-more-btn {
+            display: inline-block;
+            background: transparent;
+            border: 1px solid #00bfff;
+            color: #00bfff;
+            padding: 10px 25px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 191, 255, 0.2);
+        }
+
+        .read-more-btn:hover {
+            background: #00bfff;
+            color: #030712;
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.6);
+        }
+
+        /* Main Content Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 5%;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 50px;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Article Feed */
+        .feed-title {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            border-left: 3px solid #ff3366;
+            padding-left: 15px;
+        }
+
+        .article-card {
+            background: rgba(11, 19, 41, 0.4);
+            border: 1px solid rgba(0, 191, 255, 0.15);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .article-card:hover {
+            border-color: rgba(0, 191, 255, 0.6);
+            transform: translateY(-3px);
+        }
+
+        .article-meta {
+            font-size: 0.8rem;
+            color: #93c5fd;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .article-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .article-card p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .article-link {
+            color: #00bfff;
+            text-decoration: none;
+            font-size: 0.85srem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .article-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Sidebar Styling */
+        .sidebar-widget {
+            background: rgba(11, 19, 41, 0.2);
+            border: 1px solid rgba(0, 191, 255, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .sidebar-widget h4 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            color: #ffffff;
+            border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+            padding-bottom: 8px;
+        }
+
+        .sidebar-widget p {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .newsletter-input {
+            width: 100%;
+            background: #030712;
+            border: 1px solid rgba(0, 191, 255, 0.3);
+            padding: 10px;
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: #00bfff;
+        }
+
+        .newsletter-btn {
+            width: 100%;
+            background: #00bfff;
+            color: #030712;
+            border: none;
+            padding: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            opacity: 0.85;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-list li {
+            margin-bottom: 10px;
+        }
+
+        .category-list a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .category-list a:hover {
+            color: #00bfff;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid rgba(0, 191, 255, 0.2);
+            padding: 40px 5%;
+            text-align: center;
+            background: #02040a;
+            color: #64748b;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Header -->
+    <header>
+        <a href="#" class="logo">dont.likes<span>yOu</span>.org</a>
+        <nav>
+            <a href="#">Articles</a>
+            <a href="#">Manifesto</a>
+            <a href="#">Terminal</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Hero Featured Post -->
+    <section class="blog-hero">
+        <div class="lens-flare"></div>
+        <div class="hero-content">
+            <div class="hero-tag">Featured Dispatch // 04.12.2026</div>
+            <h1 class="hero-title">Decoding the Noise: Why Truth Hits Different in the Digital Age</h1>
+            <p class="hero-excerpt">Modern systems are built on sanitized narratives and automated consensus. Dive deep into the underlying code of information distribution, decentralized transparency, and the protocols shaping the next era of truth verification.</p>
+            <a href="#" class="read-more-btn">Read Transmission</a>
+        </div>
+    </section>
+
+    <!-- Main Grid Content -->
+    <div class="container">
+        <!-- Article Stream -->
+        <main>
+            <h2 class="feed-title">Latest Dispatches</h2>
+
+            <article class="article-card">
+                <div class="article-meta">SYS_LOG // March 28, 2026</div>
+                <h3>The Architecture of Anonymous Networks</h3>
+                <p>An exploratory look into how routing layers, onion encryption, and zero-knowledge systems preserve operational privacy when interacting with public-facing database endpoints.</p>
+                <a href="#" class="article-link">Read Article &rarr;</a>
+            </article>
+
+            <article class="article-card">
+                <div class="article-meta">SECURITY // March 15, 2026</div>
+                <h3>Bypassing the Default Filter Bubble</h3>
+                <p>Algorithms are tuned to feed confirmation loops. Breaking out requires deliberate friction, alternative protocol layers, and raw, unfiltered data sources.</p>
+                <a href="#" class="article-link">Read Article &rarr;</a>
+            </article>
+
+            <article class="article-card">
+                <div class="article-meta">PHILOSOPHY // March 02, 2026</div>
+                <h3>Signal vs. Noise in Automated Media</h3>
+                <p>As content generation scales exponentially via automated nodes, the relative value of raw, human-verified reality scales inversely. How do we filter the signal?</p>
+                <a href="#" class="article-link">Read Article &rarr;</a>
+            </article>
+        </main>
+
+        <!-- Sidebar -->
+        aside>
+            <div class="sidebar-widget">
+                <h4>About The Network</h4>
+                <p>dont.likesyou.org is an independent publication dedicated to raw analytics, digital sovereignty, and unfiltered technical dispatches.</p>
+            </div>
+
+            <div class="sidebar-widget">
+                <h4>Secure Transmission</h4>
+                <p>Subscribe to receive encrypted updates directly to your inbox. No tracking, no marketing bloat.</p>
+                <input type="email" class="newsletter-input" placeholder="Enter endpoint (email)...">
+                <button class="newsletter-btn">Connect</button>
+            </div>
+
+            <div class="sidebar-widget">
+                <h4>Categories</h4>
+                <ul class="category-list">
+                    <li><a href="#">&gt; System Architecture (14)</a></li>
+                    <li><a href="#">&gt; Digital Privacy (09)</a></li>
+                    <li><a href="#">&gt; Unfiltered Analysis (22)</a></li>
+                    <li><a href="#">&gt; Protocol Logs (05)</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 dont.likesyou.org. All rights reserved. Where Truth Hits Different.</p>
+    </footer>
+
+</body>
+</html>
